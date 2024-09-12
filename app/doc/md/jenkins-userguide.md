@@ -351,3 +351,25 @@ docker 이미지 생성 및 도커 허브에 push 하기
               - `docker pull [dockerHub UserName]/[dockerHub Repository]:[version]`
               - `docker ps -q --filter name=[containerName] | grep -q . && docker rm -f $(docker ps -aq --filter name=[containerName])`
               - `docker run -d --name [containerName] -p 80:80 [dockerHub UserName]/[dockerHub Repository]:[version]`
+
+
+
+## [젠킨스 다시 설치하고  싶을 때]
+
+```
+docker ps   -- 도커 컨테이너 확인
+
+docker container stop 4d6acc6d9fbd   -- 도커 컨테이너 중지
+
+docker container remove 4d6acc6d9fbd   -- 도커 컨테이너 삭제
+
+--volume을 삭제해야 완전 초기화가 된다.
+
+docker volume ls					-- 도커 볼륨(저장소) 확인
+docker volume rm jenkins_home		-- 도커 볼륨 삭제
+
+docker run --privileged -d -v /var/run/docker.sock:/var/run/docker.sock -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 --restart=on-failure --network="jenkins" --name my-jenkins suhodo/my-jenkins:1.0
+-- 도커 컨테이너 다시 생성
+
+docker container ls		-- 도커 컨테이너 확인
+```
